@@ -1,0 +1,69 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "description": "Org-wide Renovate config for theplainworks",
+  "schedule": ["before 9am on Monday"],
+  "timezone": "Asia/Seoul",
+  "prHourlyLimit": 5,
+  "prConcurrentLimit": 10,
+  "dependencyDashboard": true,
+  "automerge": false,
+  "packageRules": [
+    {
+      "description": "Auto-merge patch updates after CI passes",
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "description": "Auto-merge minor updates after CI passes",
+      "matchUpdateTypes": ["minor"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "description": "Major updates require manual review",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["major-update"]
+    },
+    {
+      "description": "Group all PaperJSX internal deps — never auto-merge",
+      "matchPackagePatterns": ["^@paperjsx/"],
+      "automerge": false,
+      "groupName": "paperjsx internal",
+      "labels": ["internal-dep"]
+    },
+    {
+      "description": "Group all Reshot internal deps — never auto-merge",
+      "matchPackagePatterns": ["^@reshotdev/"],
+      "automerge": false,
+      "groupName": "reshotdev internal",
+      "labels": ["internal-dep"]
+    },
+    {
+      "description": "Group linting and formatting tools",
+      "matchPackagePatterns": ["^eslint", "^prettier", "^@typescript-eslint/"],
+      "groupName": "linting and formatting"
+    },
+    {
+      "description": "Group test tooling",
+      "matchPackagePatterns": ["^vitest", "^@vitest/", "^playwright"],
+      "groupName": "testing tools"
+    },
+    {
+      "description": "Pin GitHub Actions to digest for security",
+      "matchManagers": ["github-actions"],
+      "automerge": false,
+      "labels": ["ci"]
+    }
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 5am on the first day of the month"]
+  },
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"]
+  }
+}
